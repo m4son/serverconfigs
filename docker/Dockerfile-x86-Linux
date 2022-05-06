@@ -1,7 +1,7 @@
 FROM ubuntu:18.04
 ENV quakedir="/opt/aq2"
 ENV quakeuser="quaker"
-ENV aqtionversion="v1.0.1"
+ENV aqtionversion="_AQTION_VERSION_"
 
 RUN useradd ${quakeuser} -u 1001
 RUN mkdir -p ${quakedir}/action/logs
