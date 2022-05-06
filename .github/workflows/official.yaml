@@ -36,5 +36,5 @@ jobs:
         working-directory: ${{ env.CFG_WORKING_DIR }}
         run: |
           sed -i "s/_AQTION_VERSION_/${{ github.event.inputs.release_tag }}/g" Dockerfile
-          docker build -t aqtiongame/official:${{ github.event.inputs.release_tag }}
+          docker build -t aqtiongame/official:${{ github.event.inputs.release_tag }} .
           docker push aqtiongame/official:${{ github.event.inputs.release_tag }}
