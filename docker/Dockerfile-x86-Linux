@@ -11,10 +11,8 @@ RUN apt-get update && apt-get install wget liblua5.1-0 lua5.1-dev lua5.1 -y
 RUN wget https://github.com/actionquake/distrib/releases/download/${aqtionversion}/aqtion-${aqtionversion}-linux-amd64.tar.gz && tar xvf aqtion-${aqtionversion}-linux-amd64.tar.gz --strip-components=1 -C /opt/aq2/
 
 RUN mkdir -p ${quakedir}/plugins/
-COPY linux-x64-dist/config.lua linux-x64-dist/LICENSE ${quakedir}/
-COPY linux-x64-dist/plugins/* ${quakedir}/plugins/
-COPY linux-x64-dist/q2proded ${quakedir}/q2proded
-
+COPY server/config.lua linux-x64-dist/LICENSE ${quakedir}/
+COPY server/plugins/* ${quakedir}/plugins/
 COPY aq2-entrypoint.sh ${quakedir}
 
 RUN chmod +x ${quakedir}/q2proded ${quakedir}/aq2-entrypoint.sh
