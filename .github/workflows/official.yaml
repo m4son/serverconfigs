@@ -35,5 +35,7 @@ jobs:
       - name: Docker build and push
         working-directory: ${{ env.CFG_WORKING_DIR }}
         run: |
-          docker build -t aqtiongame/official:${{ github.event.inputs.release_tag }}
+          docker build --build-arg aqtionversion -t aqtiongame/official:${{ github.event.inputs.release_tag }}
           docker push aqtiongame/official:${{ github.event.inputs.release_tag }}
+        env:
+          aqtionversion: ${{ github.event.inputs.release_tag }}
