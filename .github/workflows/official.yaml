@@ -15,9 +15,9 @@ on:
         required: true
         default: bots
 
-
 env:
   CFG_WORKING_DIR: "config"
+  TNG_WORKING_DIR: "tng"
 
 jobs:      
   serverfiles_release:
@@ -28,6 +28,12 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
+          
+      - name: Checkout serverconfigs
+        uses: actions/checkout@v3
+        with:
+          repository: actionquake/serverconfigs
+          path: ${{ env.CFG_WORKING_DIR }}
 
       - name: Checkout TNG
         uses: actions/checkout@v3
@@ -40,13 +46,7 @@ jobs:
         working-directory: ${{ env.TNG_WORKING_DIR }}
         run: |
           cd source && make -j2 V=1
-          cp gamex86_64.so ../../
-
-      - name: Checkout serverconfigs
-        uses: actions/checkout@v3
-        with:
-          repository: actionquake/serverconfigs
-          path: ${{ env.CFG_WORKING_DIR }}
+          cp gamex86_64.so ../../config
 
       - name: Copy files to parent directory
         working-directory: ${{ env.CFG_WORKING_DIR }}
