@@ -14,6 +14,10 @@ on:
         description: "TNG Github branch"
         required: true
         default: antilag
+      docker_image_name:
+        description: "Docker image name"
+        required: true
+        default: "official"
 
 env:
   CFG_WORKING_DIR: "config"
@@ -58,5 +62,5 @@ jobs:
         working-directory: ${{ env.CFG_WORKING_DIR }}
         run: |
           sed -i "s/_AQTION_VERSION_/${{ github.event.inputs.release_tag }}/g" Dockerfile
-          docker build -t aqtiongame/official:${{ github.event.inputs.release_tag }} .
-          docker push aqtiongame/official:${{ github.event.inputs.release_tag }}
+          docker build -t aqtiongame/${{ github.event.inputs.docker_image_name }}:${{ github.event.inputs.release_tag }} .
+          docker push aqtiongame/${{ github.event.inputs.docker_image_name }}:${{ github.event.inputs.release_tag }}
