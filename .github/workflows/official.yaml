@@ -6,6 +6,15 @@ on:
       release_tag:
         description: "Release version tag"
         required: true
+      github_repo:
+        description: "TNG Github repo"
+        required: true
+        default: raptor007/aq2-tng
+      github_branch:
+        description: "TNG Github branch"
+        required: true
+        default: bots
+
 
 env:
   CFG_WORKING_DIR: "config"
@@ -20,6 +29,19 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
+      - name: Checkout TNG
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ github.event.inputs.github_repo }}
+          ref: ${{ github.event.inputs.github_branch }}
+          path: ${{ env.TNG_WORKING_DIR }}
+
+      - name: Build TNG (Linux x86)
+        working-directory: ${{ env.TNG_WORKING_DIR }}
+        run: |
+          cd source && make -j2 V=1
+          cp gamex86_64.so ../../
+
       - name: Checkout serverconfigs
         uses: actions/checkout@v3
         with:
@@ -30,7 +52,7 @@ jobs:
         working-directory: ${{ env.CFG_WORKING_DIR }}
         run: |
           mv docker/aq2-entrypoint.sh aq2-entrypoint.sh
-          mv docker/Dockerfile-x86-Linux Dockerfile
+          mv docker/Dockerfile-ci Dockerfile
 
       - name: Docker build and push
         working-directory: ${{ env.CFG_WORKING_DIR }}
