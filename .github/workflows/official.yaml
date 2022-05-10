@@ -82,7 +82,7 @@ jobs:
           mv server/configs/official/config.lua .
           mv server/configs/official/plugins .
           cp -r server/files/tng/ action/
-          cp -r server/files/official/* action/
+          cp -r server/configs/official/* action/
           cp gamex86_64.real.so action/gamex86_64.real.so
           cp gamex86_64.so action/gamex86_64.so
 
