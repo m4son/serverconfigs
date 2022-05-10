@@ -6,6 +6,14 @@ on:
       release_tag:
         description: "Release version tag"
         required: true
+      q2pro_github_repo:
+        description: "Q2Pro Github repo"
+        required: true
+        default: actionquake/q2pro
+      q2pro_github_branch:
+        description: "Q2Pro Github branch"
+        required: true
+        default: aqtion
       tng_github_repo:
         description: "TNG Github repo"
         required: true
@@ -31,6 +39,7 @@ env:
   CFG_WORKING_DIR: "config"
   TNG_WORKING_DIR: "tng"
   Q2A_WORKING_DIR: "q2admin"
+  Q2P_WORKING_DIR: "q2pro"
 
 jobs:      
   serverfiles_release:
@@ -41,6 +50,13 @@ jobs:
         with:
           repository: actionquake/serverconfigs
           path: ${{ env.CFG_WORKING_DIR }}
+
+      - name: Checkout Q2Pro
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ github.event.inputs.q2pro_github_repo }}
+          ref: ${{ github.event.inputs.q2pro_github_branch }}
+          path: ${{ env.Q2P_WORKING_DIR }}
 
       - name: Checkout TNG
         uses: actions/checkout@v3
@@ -56,6 +72,19 @@ jobs:
           ref: ${{ github.event.inputs.q2admin_github_branch }}
           path: ${{ env.Q2A_WORKING_DIR }}
 
+      - name: Install dependencies
+        run: |
+            sudo apt-get update
+            sudo apt install -y libsdl2-dev libopenal-dev \
+            libpng-dev libjpeg-dev zlib1g-dev mesa-common-dev \
+            libcurl4-gnutls-dev liblua5.1-0 lua5.1-dev lua5.1
+
+      - name: Build Q2Pro (Linux x86)
+        working-directory: ${{ env.Q2P_WORKING_DIR }}
+        run: |
+          cd src && make -j2 V=1
+          cp q2proded ../../config/q2proded
+
       - name: Build TNG (Linux x86)
         working-directory: ${{ env.TNG_WORKING_DIR }}
         run: |
@@ -65,7 +94,6 @@ jobs:
       - name: Build q2admin (Linux x86)
         working-directory: ${{ env.Q2A_WORKING_DIR }}
         run: |
-          sudo apt-get update && sudo apt-get install liblua5.1-0 lua5.1-dev lua5.1
           make -j2 V=1
           cp gamex86_64.so ../config/gamex86_64.so
 
