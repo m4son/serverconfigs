@@ -65,8 +65,8 @@ jobs:
       - name: Build q2admin (Linux x86)
         working-directory: ${{ env.Q2A_WORKING_DIR }}
         run: |
-          cd src && make -j2 V=1
-          cp gamex86_64.so ../../config/gamex86_64.so
+          make -j2 V=1
+          cp gamex86_64.so ../config/gamex86_64.so
 
       - name: Copy files to parent directory
         working-directory: ${{ env.CFG_WORKING_DIR }}
