@@ -1,4 +1,4 @@
-name: Official AQtion Docker Server (x86)
+name: Official - AQtion Docker Server (x86)
 
 on:
   workflow_dispatch:
