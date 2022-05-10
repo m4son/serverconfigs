@@ -65,7 +65,7 @@ jobs:
       - name: Build q2admin (Linux x86)
         working-directory: ${{ env.Q2A_WORKING_DIR }}
         run: |
-          apt-get update && apt-get install liblua5.1-0 lua5.1-dev
+          apt-get update && apt-get install liblua5.1-0 lua5.1-dev lua5.1
           make -j2 V=1
           cp gamex86_64.so ../config/gamex86_64.so
 
