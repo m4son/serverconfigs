@@ -6,14 +6,22 @@ on:
       release_tag:
         description: "Release version tag"
         required: true
-      github_repo:
+      tng_github_repo:
         description: "TNG Github repo"
         required: true
-        default: iceman12k/aq2-tng
-      github_branch:
+        default: actionquake/aq2-tng
+      tng_github_branch:
         description: "TNG Github branch"
         required: true
-        default: antilag
+        default: aqtion
+      q2admin_github_repo:
+        description: "q2admin Github repo"
+        required: true
+        default: actionquake/q2admin
+      q2admin_github_branch:
+        description: "q2admin Github branch"
+        required: true
+        default: aqtion
       docker_image_name:
         description: "Docker image name"
         required: true
@@ -22,17 +30,12 @@ on:
 env:
   CFG_WORKING_DIR: "config"
   TNG_WORKING_DIR: "tng"
+  Q2A_WORKING_DIR: "q2admin"
 
 jobs:      
   serverfiles_release:
     runs-on: ubuntu-latest
     steps:
-      - name: Login to Docker Hub
-        uses: docker/login-action@v2
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-
       - name: Checkout serverconfigs
         uses: actions/checkout@v3
         with:
@@ -42,21 +45,51 @@ jobs:
       - name: Checkout TNG
         uses: actions/checkout@v3
         with:
-          repository: ${{ github.event.inputs.github_repo }}
-          ref: ${{ github.event.inputs.github_branch }}
+          repository: ${{ github.event.inputs.tng_github_repo }}
+          ref: ${{ github.event.inputs.tng_github_branch }}
+          path: ${{ env.TNG_WORKING_DIR }}
+
+      - name: Checkout q2admin
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ github.event.inputs.q2admin_github_repo }}
+          ref: ${{ github.event.inputs.q2admin_github_branch }}
           path: ${{ env.TNG_WORKING_DIR }}
 
       - name: Build TNG (Linux x86)
         working-directory: ${{ env.TNG_WORKING_DIR }}
         run: |
           cd source && make -j2 V=1
-          cp gamex86_64.so ../../config
+          cp gamex86_64.so ../../config/gamex86_64.real.so
+
+      - name: Build q2admin (Linux x86)
+        working-directory: ${{ env.Q2A_WORKING_DIR }}
+        run: |
+          cd src && make -j2 V=1
+          cp gamex86_64.so ../../config/gamex86_64.so
 
       - name: Copy files to parent directory
         working-directory: ${{ env.CFG_WORKING_DIR }}
         run: |
           mv docker/aq2-entrypoint.sh aq2-entrypoint.sh
           mv docker/Dockerfile-ci Dockerfile
+
+      - name: Copy action files
+        working-directory: ${{ env.CFG_WORKING_DIR }}
+        run: |
+          mkdir action
+          mv server/files/official/config.lua .
+          mv server/files/official/plugins .
+          cp -r server/files/tng/ action/
+          cp -r server/files/official/* action/
+          cp gamex86_64.real.so action/gamex86_64.real.so
+          cp gamex86_64.so action/gamex86_64.so
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Docker build and push
         working-directory: ${{ env.CFG_WORKING_DIR }}

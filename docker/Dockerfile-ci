@@ -1,20 +1,12 @@
 FROM ubuntu:18.04
 ENV quakedir="/opt/aq2"
 ENV quakeuser="quaker"
-ENV aqtionversion="_AQTION_VERSION_"
 
 RUN useradd ${quakeuser} -u 1001
-RUN mkdir -p ${quakedir}/action/logs
 RUN apt-get update && apt-get install wget liblua5.1-0 lua5.1-dev lua5.1 -y
 
-## Get the latest contents
-RUN wget -q https://github.com/actionquake/distrib/releases/download/${aqtionversion}/aqtion-${aqtionversion}-linux-amd64.tar.gz && tar xvf aqtion-${aqtionversion}-linux-amd64.tar.gz --strip-components=1 -C /opt/aq2/
-
 RUN mkdir -p ${quakedir}/plugins/
-COPY server/configs/official/config.lua LICENSE ${quakedir}/
-COPY server/configs/official/teamplay.cfg server/configs/official/action.ini server/configs/official/autoexec.cfg LICENSE ${quakedir}/action/
-COPY server/configs/official/plugins/* ${quakedir}/plugins/
-COPY gamex86_64.so ${quakedir}/action/gamex86_64.real.so
+COPY action LICENSE ${quakedir}/
 COPY aq2-entrypoint.sh ${quakedir}
 
 RUN chmod +x ${quakedir}/q2proded ${quakedir}/aq2-entrypoint.sh
