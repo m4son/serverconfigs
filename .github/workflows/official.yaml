@@ -54,7 +54,7 @@ jobs:
         with:
           repository: ${{ github.event.inputs.q2admin_github_repo }}
           ref: ${{ github.event.inputs.q2admin_github_branch }}
-          path: ${{ env.TNG_WORKING_DIR }}
+          path: ${{ env.Q2A_WORKING_DIR }}
 
       - name: Build TNG (Linux x86)
         working-directory: ${{ env.TNG_WORKING_DIR }}
