@@ -44,7 +44,7 @@ env:
 jobs:      
   serverfiles_release:
     #runs-on: ubuntu-latest
-    runs-on: ["self-hosted", "x86"]
+    runs-on: [self-hosted, x86]
     steps:
       - name: Checkout serverconfigs
         uses: actions/checkout@v3
