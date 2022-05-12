@@ -83,7 +83,7 @@ jobs:
       - name: Build Q2Pro (Linux x86)
         working-directory: ${{ env.Q2P_WORKING_DIR }}
         run: |
-          make -j2 V=1
+          export CONFIG_FILE=docker/q2pro_linux ; make -j2 V=1
           cp q2proded ../config/q2proded
 
       - name: Build TNG (Linux x86)
