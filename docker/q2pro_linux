@@ -21,4 +21,4 @@ LDFLAGS=-no-pie
 
 CONFIG_PATH_DATA=.
 CONFIG_PATH_HOME=~/aqtion
-PLATFORM="Standalone"
+PLATFORM=Standalone
