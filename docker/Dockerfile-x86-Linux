@@ -14,7 +14,7 @@ RUN wget -q https://github.com/actionquake/distrib/releases/download/${aqtionver
 
 RUN mkdir -p ${quakedir}/plugins/
 COPY server/configs/official/config.lua LICENSE ${quakedir}/
-COPY server/configs/official/teamplay.cfg server/configs/official/action.ini server/configs/official/autoexec.cfg server/configs/official/deathmatch.cfg server/configs/official/teamdeathmatch.cfg  LICENSE ${quakedir}/action/
+COPY server/configs/official/teamplay.cfg server/configs/official/action.ini server/configs/official/autoexec.cfg server/configs/official/deathmatch.cfg server/configs/official/teamdeathmatch.cfg server/configs/official/ctf.cfg server/configs/official/3team.cfg LICENSE ${quakedir}/action/
 COPY server/configs/official/plugins/* ${quakedir}/plugins/
 COPY aq2-entrypoint.sh ${quakedir}
 
