@@ -1,13 +1,16 @@
-version: "3"
+kversion: "3"
 
 services:
-  server:
-    image: aqtion
+  tp5:
+    container_name: tp5
+    hostname: tp5
+    image: aqtiongame/official:v1.0.6
     ports:
       - "27910:27910/udp"
     stdin_open: true
     tty: true
     restart: on-failure:5
     env_file:
-     - ./teamplay.example.env
-    command: q2proded +exec teamplay.cfg +set net_port ${PORT} +set hostname ${HOSTNAME} +set maxclients ${MAXCLIENTS} +set rcon_password ${RCON_PASSWORD}
+     - ./tp5.env
+    volumes:
+      - /opt/action/logs:/opt/aq2/action/logs
