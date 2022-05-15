@@ -2,14 +2,17 @@
 set -e
 
 while read var; do
-  [ -z "${!var}" ] && { echo "$var is empty or not set. Exiting."; exit 1; }
+  [ -z "${!var}" ] && { echo "$var is empty or not set. Yes, even if you aren't playing 3teams, just fill in dummy info. Exiting."; exit 1; }
 done << EOF
 TEAM_1_NAME
 TEAM_2_NAME
+TEAM_3_NAME
 TEAM_1_MODEL
 TEAM_1_SKIN
 TEAM_2_MODEL
 TEAM_2_SKIN
+TEAM_3_MODEL
+TEAM_3_SKIN
 AQ_HOSTNAME
 AQ_PORT
 AQ_CONFIG
@@ -32,10 +35,13 @@ fi
 ## Replace with actual values
 sed -i "s/TEAM_1_NAME/${TEAM_1_NAME}/g" /opt/aq2/action/action.ini
 sed -i "s/TEAM_2_NAME/${TEAM_2_NAME}/g" /opt/aq2/action/action.ini
+sed -i "s/TEAM_3_NAME/${TEAM_3_NAME}/g" /opt/aq2/action/action.ini
 sed -i "s/TEAM_1_MODEL/${TEAM_1_MODEL}/g" /opt/aq2/action/action.ini
 sed -i "s/TEAM_1_SKIN/${TEAM_1_SKIN}/g" /opt/aq2/action/action.ini
 sed -i "s/TEAM_2_MODEL/${TEAM_2_MODEL}/g" /opt/aq2/action/action.ini
 sed -i "s/TEAM_2_SKIN/${TEAM_2_SKIN}/g" /opt/aq2/action/action.ini
+sed -i "s/TEAM_3_MODEL/${TEAM_3_MODEL}/g" /opt/aq2/action/action.ini
+sed -i "s/TEAM_3_SKIN/${TEAM_3_SKIN}/g" /opt/aq2/action/action.ini
 
 ## Run q2proded
 
