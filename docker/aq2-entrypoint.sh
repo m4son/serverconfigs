@@ -16,6 +16,9 @@ AQ_CONFIG
 AQ_MAXCLIENTS
 AQ_RCON_PASSWORD
 AQ_REDIRECT_SERVER
+AQ_TIMELIMIT
+AQ_FRAGLIMIT
+AQ_ROUNDLIMIT
 EOF
 
 if [[ ${AQ_RCON_PASSWORD} = "pleaseupdateme" ]]; then
@@ -36,4 +39,11 @@ sed -i "s/TEAM_2_SKIN/${TEAM_2_SKIN}/g" /opt/aq2/action/action.ini
 
 ## Run q2proded
 
-/opt/aq2/q2proded +set game action +set hostname "${AQ_HOSTNAME}" +set net_port "${AQ_PORT}" +set sv_redirect_address ${AQ_REDIRECT_SERVER} +exec ${AQ_CONFIG}.cfg
+/opt/aq2/q2proded +set game action \
++set hostname "${AQ_HOSTNAME}" \
++set net_port "${AQ_PORT}" \
++set sv_redirect_address ${AQ_REDIRECT_SERVER} \
++set timelimit ${AQ_TIMELIMIT} \
++set fraglimit ${AQ_FRAGLIMIT} \
++set roundlimit ${AQ_ROUNDLIMIT} \
++exec ${AQ_CONFIG}.cfg
